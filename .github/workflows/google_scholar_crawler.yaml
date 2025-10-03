@@ -8,54 +8,60 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # 💥 关键修正：添加权限块
     # 明确授予 GITHUB_TOKEN 写入仓库内容的权限
     permissions:
       contents: write
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    # 将 run: |... 中的 git config 移到这里，使用 GITHUB_ACTOR 更规范
-    - name: Setup Git User
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Setup Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Install Reqs
-      run: |
-        # 推荐使用 python3-pip 而非 python3-setuptools
-        sudo apt-get update
-        sudo apt-get install -y python3-pip
-        
-    - name: Run Crawler and Push Data
-      run: |
-        cd ./google_scholar_crawler
-        pip3 install -r requirements.txt
-        python3 main.py
-        
-        # # 返回仓库根目录，进行 Git 操作
-        # cd ..
-        
-        # 进入 results 目录进行 Git 操作
-        cd ./results
-        
-        # 暂存所有 .json 文件
-        git add *.json
-        
-        # 检查暂存区是否有任何变化 (比对是否有文件需要提交)
-        if git diff --cached --quiet; then
-          echo "No citation data changes detected. Skipping commit."
-        else
-          echo "Changes detected. Committing and pushing data..."
+      - name: Install Reqs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
           
-          # 使用默认 GITHUB_TOKEN 进行身份验证的 URL
-          export remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+      - name: Run Crawler and Push Data
+        run: |
+          # 1. 运行爬虫
+          cd ./google_scholar_crawler
+          pip3 install -r requirements.txt
+          python3 main.py
           
-          git commit -m "Automated: Updated Citation Data"
+          # 2. 返回仓库根目录 (💥 关键修复 2: 恢复 cd ..)
+          # 必须回到根目录才能正确处理文件和执行 Git
+          cd .. 
           
-          # 推送数据到 google-scholar-stats 分支
-          git push "${remote_repo}" HEAD:google-scholar-stats --force
-        fi
-      env: 
-        GOOGLE_SCHOLAR_ID: ${{ secrets.GOOGLE_SCHOLAR_ID }}
+          # 3. 确保最终提交目录存在
+          mkdir -p ./results
+          
+          # 4. 移动文件 (💥 关键修复 3: 将文件从爬虫子目录移出)
+          # 假设 main.py 在 ./google_scholar_crawler/results 中生成文件
+          # 使用 || true 避免在没有文件时脚本退出
+          mv ./google_scholar_crawler/results/*.json ./results/ || true
+          
+          # 5. 暂存所有 .json 文件
+          # 在根目录对 ./results 中的文件执行 git add
+          git add ./results/*.json
+          
+          # 6. 检查暂存区是否有任何变化
+          if git diff --cached --quiet; then
+            echo "No citation data changes detected. Skipping commit."
+          else
+            echo "Changes detected. Committing and pushing data..."
+            
+            # 使用默认 GITHUB_TOKEN 进行身份验证的 URL
+            export remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+            
+            git commit -m "Automated: Updated Citation Data"
+            
+            # 推送数据到 google-scholar-stats 分支
+            git push "${remote_repo}" HEAD:google-scholar-stats --force
+          fi
+        env: 
+          GOOGLE_SCHOLAR_ID: ${{ secrets.GOOGLE_SCHOLAR_ID }}
+
