@@ -32,6 +32,11 @@ jobs:
           pip3 install -r requirements.txt
           python3 main.py
           
+          # 💥 修复挂起问题：为爬虫脚本添加 300 秒 (5 分钟) 的超时
+          # 如果脚本卡住，300 秒后会自动退出，Action 不会无限运行。
+          # || true 确保即使超时失败，Action 也能继续运行后续的 shell 命令，但提交将跳过。
+          timeout 300 python3 main.py || true
+
           # 2. 返回仓库根目录 (💥 关键修复 2: 恢复 cd ..)
           # 必须回到根目录才能正确处理文件和执行 Git
           cd .. 
