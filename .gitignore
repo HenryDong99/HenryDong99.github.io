@@ -2,8 +2,5 @@
 .DS_Store
 # 忽略 Jekyll 生成的站点文件夹
 _site
-# 忽略 Ruby Bundler 相关文件夹
-.bundle
-vendor
 # 忽略自定义的推送脚本文件
 push.sh
