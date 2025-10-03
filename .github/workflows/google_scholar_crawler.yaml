@@ -8,22 +8,58 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 💥 关键修正：添加权限块
+    # 明确授予 GITHUB_TOKEN 写入仓库内容的权限
+    permissions:
+      contents: write
+
     steps:
     - uses: actions/checkout@v2
+
+    # 将 run: |... 中的 git config 移到这里，使用 GITHUB_ACTOR 更规范
+    - name: Setup Git User
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
     - name: Install Reqs
       run: |
-        sudo apt-get install python3-setuptools
-    - name: Run
+        # 推荐使用 python3-pip 而非 python3-setuptools
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        
+    - name: Run Crawler and Push Data
       run: |
         cd ./google_scholar_crawler
         pip3 install -r requirements.txt
         python3 main.py
-        cd ./results
-        git init
-        git config --local user.name "${GITHUB_ACTOR}"
-        export remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
-        git add *.json
-        git commit -m "Updated Citation Data"
-        git push "${remote_repo}" HEAD:google-scholar-stats --force
+        
+        # 返回仓库根目录，进行 Git 操作
+        cd ..
+        
+        # 检查是否有文件需要提交
+        if [ -d "./results" ]; then
+          cd ./results
+          
+          # 检查是否有新的或修改过的 .json 文件
+          git status --porcelain *.json
+          if [ $? -eq 0 ]; then
+            
+            # 使用默认 GITHUB_TOKEN 进行身份验证的 URL (现在拥有写入权限)
+            export remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+            
+            git add *.json
+            git commit -m "Automated: Updated Citation Data"
+            
+            # 推送数据到 google-scholar-stats 分支
+            # 注意：此处不再需要 git init/git config, 因为上一步 checkout@v2 已经初始化了 Git
+            git push "${remote_repo}" HEAD:google-scholar-stats --force
+          else
+            echo "No citation data changes detected. Skipping commit."
+          fi
+        else
+          echo "Error: ./results directory not found after running main.py"
+        fi
       env: 
         GOOGLE_SCHOLAR_ID: ${{ secrets.GOOGLE_SCHOLAR_ID }}
+        
