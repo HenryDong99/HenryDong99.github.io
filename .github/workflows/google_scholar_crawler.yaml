@@ -34,11 +34,8 @@ jobs:
         pip3 install -r requirements.txt
         python3 main.py
         
-        # 返回仓库根目录，进行 Git 操作
-        cd ..
-        
-        # 💥 关键修改: 确保 ./results 目录存在 (满足您的要求)
-        mkdir -p ./results
+        # # 返回仓库根目录，进行 Git 操作
+        # cd ..
         
         # 进入 results 目录进行 Git 操作
         cd ./results
@@ -62,4 +59,3 @@ jobs:
         fi
       env: 
         GOOGLE_SCHOLAR_ID: ${{ secrets.GOOGLE_SCHOLAR_ID }}
-        
