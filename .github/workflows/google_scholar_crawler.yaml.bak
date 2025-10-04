@@ -1,0 +1,72 @@
+name: Get Citation Data
+
+on: 
+ page_build: 
+ schedule:
+  - cron:  '0 8 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # 明确授予 GITHUB_TOKEN 写入仓库内容的权限
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Reqs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          
+      - name: Run Crawler and Push Data
+        run: |
+          # 1. 运行爬虫
+          cd ./google_scholar_crawler
+          pip3 install -r requirements.txt
+          python3 main.py
+          
+          # 💥 修复挂起问题：为爬虫脚本添加 300 秒 (5 分钟) 的超时
+          # 如果脚本卡住，300 秒后会自动退出，Action 不会无限运行。
+          # || true 确保即使超时失败，Action 也能继续运行后续的 shell 命令，但提交将跳过。
+          timeout 300 python3 main.py || true
+
+          # 2. 返回仓库根目录 (💥 关键修复 2: 恢复 cd ..)
+          # 必须回到根目录才能正确处理文件和执行 Git
+          cd .. 
+          
+          # 3. 确保最终提交目录存在
+          mkdir -p ./results
+          
+          # 4. 移动文件 (💥 关键修复 3: 将文件从爬虫子目录移出)
+          # 假设 main.py 在 ./google_scholar_crawler/results 中生成文件
+          # 使用 || true 避免在没有文件时脚本退出
+          mv ./google_scholar_crawler/results/*.json ./results/ || true
+          
+          # 5. 暂存所有 .json 文件
+          # 在根目录对 ./results 中的文件执行 git add
+          git add ./results/*.json
+          
+          # 6. 检查暂存区是否有任何变化
+          if git diff --cached --quiet; then
+            echo "No citation data changes detected. Skipping commit."
+          else
+            echo "Changes detected. Committing and pushing data..."
+            
+            # 使用默认 GITHUB_TOKEN 进行身份验证的 URL
+            export remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+            
+            git commit -m "Automated: Updated Citation Data"
+            
+            # 推送数据到 google-scholar-stats 分支
+            git push "${remote_repo}" HEAD:google-scholar-stats --force
+          fi
+        env: 
+          GOOGLE_SCHOLAR_ID: ${{ secrets.GOOGLE_SCHOLAR_ID }}
+
