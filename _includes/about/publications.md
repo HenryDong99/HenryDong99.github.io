@@ -1,0 +1,5 @@
+# 📝 Publications
+- `TWC` [NOMA-Empowered Integrated Sensing and Communication With Movable Antennas](https://ieeexplore.ieee.org/document/11298433), W. Lyu, X. Dong, R. Yang, K. Wang, Z. Zhang, C. Assi, and C. Yuen, *IEEE Transactions on Wireless Communications*, vol. 25, pp. 8401–8416, 2026.
+- `WCL` [Flexible Cylindrical Array-Aided Secure Wireless Communications](https://arxiv.org/abs/2604.09128), X. Dong, R. Yang, S. Yang, W. Mei, L. Zhu, Y. Xiu, and Z. Zhang.
+- `IOTJ` [Flexible Cylindrical Arrays With Movable Antennas for MISO System: Beamforming and Position Optimization](https://doi.org/10.1109/JIOT.2025.3580372), J. Guo, S. Yang, X. Dong, J. Yang, J. Deng, Z. Zhang, and C. Yuen, *IEEE Internet of Things Journal*, vol. 12, no. 17, pp. 35394–35405, 2025.
+- `CL` [Movable Antenna Enhanced Secure Simultaneous Wireless Information and Power Transfer](https://ieeexplore.ieee.org/document/11108293), X. Dong, W. Lyu, R. Yang, Y. Xiu, W. Mei, and Z. Zhang, *IEEE Communications Letters*, vol. 29, no. 10, pp. 2356–2360, 2025.

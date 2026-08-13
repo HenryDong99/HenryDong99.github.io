@@ -8,6 +8,7 @@ tags:
   - optimization
 created: 2026-08-12
 updated: 2026-08-12
+math: true
 ---
 
 ## 记录目标
@@ -16,7 +17,7 @@ updated: 2026-08-12
 
 ## 基本变量
 
-- 用 $\mathbf{x}_n\in\mathbb{R}^d$ 表示第 $n$ 根天线的位置，其中 $d=2$ 或 $d=3$。
+- 用 $\mathbf{x}_n\in\mathbb{R}^d$ 表示第 $n$ 根天线的位置。
 - 用 $\mathcal{C}$ 表示允许天线移动的区域。
 - 用 $d_{\min}$ 表示任意两根天线之间要求保持的最小距离。
 - 用 $L$ 表示参与建模的有效传播路径数。

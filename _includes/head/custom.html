@@ -5,17 +5,18 @@
 
 <meta name="msapplication-TileColor" content="#000000">
 <meta name="theme-color" content="#ffffff">
-<link rel="stylesheet" href="{{ '/assets/css/academicons.css' | relative_url }}"/>
 
-<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
+{% if page.math %}
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: { '[+]': [['$', '$']] },
+      processEscapes: true,
+      tags: 'all'
     }
-  });
+  };
 </script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+{% endif %}
 
 <!-- end custom head snippets -->

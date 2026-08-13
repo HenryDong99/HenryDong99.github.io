@@ -6,12 +6,14 @@
 # `jekyll serve`. If you change this file, please restart the server process.
 
 # Site Settings
-title                    : "Henry Dong"
-description              : "Focusing on Wireless Communication."
-url                      : "https://blog.990405.xyz"
-baseurl                  : ""
-repository               : "HenryDong99/HenryDong99.github.io"
-google_scholar_stats_use_cdn : true
+title       : "Henry Dong"
+description : "Focusing on wireless communications."
+url         : "https://blog.990405.xyz"
+baseurl     : ""
+repository  : "HenryDong99/HenryDong99.github.io"
+lang        : "en"
+locale      : "en_US"
+theme       :
 
 # google analytics
 google_analytics_id      :  # get google_analytics_id from https://analytics.google.com/analytics/
@@ -23,79 +25,32 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 
 # Site Author
 author:
-  name             : "Henry Dong"
-  avatar           : "images/profile.png"
-  bio              : "NKLWC"
-  location         : "Singapore"
-  employer         :
-  pubmed           : 
-  googlescholar    : "https://scholar.google.com/citations?user=oWU8V9cAAAAJ"
-  email            : # "Lorem@ipsum.com"
-  researchgate     : # e.g., "https://www.researchgate.net/profile/yourprofile"
-  uri              :
-  bitbucket        :
-  codepen          :
-  dribbble         :
-  flickr           :
-  facebook         :
-  foursquare       :
-  github           : "HenryDong99"
-  google_plus      :
-  keybase          :
-  instagram        :
-  impactstory      : # e.g., "https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
-  lastfm           :
-  linkedin         : # e.g., "linkedin username"
-  dblp             : # e.g., "https://dblp.org/pid/xx/xxxx.html"
-  orcid            : # e.g., "https://orcid.org/xxxx"
-  pinterest        :
-  soundcloud       :
-  stackoverflow    : # http://stackoverflow.com/users/123456/username
-  steam            :
-  tumblr           :
-  twitter          : 
-  vine             :
-  weibo            :
-  xing             :
-  youtube          :
-  wikipedia        :
+  name          : "Henry Dong"
+  avatar        : "images/profile.png"
+  bio           : "NKLWC"
+  location      : "Singapore"
+  googlescholar : "https://scholar.google.com/citations?user=oWU8V9cAAAAJ"
+  github        : "HenryDong99"
 
 
 # Reading Files
 include:
-  - .htaccess
   - _pages
-  - files
 exclude:
-  - docs
-  - google_scholar_crawler
-  - "*.sublime-project"
-  - "*.sublime-workspace"
-  - .asset-cache
   - .bundle
-  - .jekyll-assets-cache
-  - .sass-cache
+  - .DS_Store
   - .github
-  - CHANGELOG
-  - Capfile
+  - .jekyll-cache
+  - .sass-cache
+  - .vscode
+  - _site
   - Gemfile
-  - Gruntfile.js
+  - Gemfile.lock
   - LICENSE
-  - README
-  - Rakefile
-  - assets/js/_main.js
-  - assets/js/plugins
-  - assets/js/vendor
-  - config
-  - gulpfile.js
-  - log
-  - node_modules
-  - package.json
-  - tmp
+  - README.md
+  - push.sh
+  - run_server.sh
   - vendor
-keep_files:
-  - .git
-  - .svn
 encoding: "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
@@ -150,28 +105,10 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
-timezone: Asia/Shanghai # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Asia/Singapore
 
 
 # Plugins
 plugins:
-  - jekyll-paginate
   - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
   - jekyll-redirect-from
-# mimic GitHub Pages with --safe
-whitelist:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
-  - jemoji
-
-
-# HTML Compression
-# - http://jch.penibelst.de/
-compress_html:
-  clippings: all
-  ignore:
-    envs: development

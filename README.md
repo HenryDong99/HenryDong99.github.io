@@ -4,7 +4,7 @@
 
 ## 内容结构
 
-- `_pages/about.md` 是主页入口，通过 `_pages/includes/` 中的 Markdown 片段组合个人简介、论文、荣誉和教育经历。
+- `_pages/about.md` 是主页入口，通过 `_includes/about/` 中的 Markdown 片段组合个人简介、论文、荣誉和教育经历。
 - `_notes/` 保存公开笔记，每个 Markdown 文件会生成一个独立页面。
 - `_pages/notes.md` 是笔记目录页，会自动读取并按更新时间展示所有笔记。
 - `_data/navigation.yml` 管理顶部导航。
@@ -36,9 +36,13 @@ updated: 2026-08-12
 
 ## 本地预览
 
+项目使用 Ruby 3.3。macOS 使用 Homebrew 时，可按下面的方式准备环境：
+
 ```bash
+brew install ruby@3.3
+export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"
 bundle install
-bundle exec jekyll serve
+./run_server.sh
 ```
 
-打开终端中显示的本地地址即可预览。修改 `_config.yml` 后需要重启本地服务。
+打开终端中显示的本地地址即可预览。页面内容和样式会自动刷新；修改 `_config.yml` 后需要重启本地服务。
