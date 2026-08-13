@@ -6,6 +6,14 @@
           <span class="screen-reader-text">Toggle navigation</span>
           <span class="navicon" aria-hidden="true"></span>
         </button>
+        <button
+          type="button"
+          id="theme-switch"
+          class="theme-switch"
+          aria-pressed="false"
+          aria-label="切换黑夜/白天模式">
+          <span class="theme-switch__label">🌙 夜间</span>
+        </button>
         <ul id="primary-menu" class="visible-links">
           <li class="masthead__menu-item masthead__menu-item--lg masthead__menu-home-item"><a href="{{ '/' | relative_url }}#about-me">Homepage</a></li>
           {% for link in site.data.navigation.main %}
