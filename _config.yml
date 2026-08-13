@@ -8,6 +8,8 @@
 # Site Settings
 title                    : "Henry Dong"
 description              : "Focusing on Wireless Communication."
+url                      : "https://blog.990405.xyz"
+baseurl                  : ""
 repository               : "HenryDong99/HenryDong99.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -118,6 +120,11 @@ kramdown:
   enable_coderay: false
 
 # Defaults
+collections:
+  notes:
+    output: true
+    permalink: /notes/:path/
+
 defaults:
   # _pages
   - scope:
@@ -126,6 +133,13 @@ defaults:
     values:
       layout: default
       author_profile: true
+  # _notes
+  - scope:
+      path: ""
+      type: notes
+    values:
+      layout: note
+      author_profile: false
 
 
 # Sass/SCSS

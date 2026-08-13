@@ -2,6 +2,8 @@
 .DS_Store
 # 忽略 Jekyll 生成的站点文件夹
 _site
+# 忽略 Sass 编译缓存
+.sass-cache/
 # 忽略自定义的推送脚本文件
 push.sh
 .vscode/
